@@ -35,19 +35,20 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:gravity="center"/>
+
         <EditText
             android:id="@+id/exit"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="16dp"
-            android:fontFamily="@font/karmaregular"
-            android:hint="Пишите здесь"
-            android:textColorHint="#A79E9E"
-            android:textSize="16sp"
-            android:gravity="left"
             android:background="@drawable/border_text_view"
+            android:fontFamily="@font/karmaregular"
+            android:gravity="left"
+            android:hint="Пишите здесь"
+            android:inputType="textMultiLine"
+            android:padding="16dp"
             android:textColor="@color/white"
-            android:inputType="textMultiLine"/>
+            android:textColorHint="#A79E9E"
+            android:textSize="16sp" />
     </LinearLayout>
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
