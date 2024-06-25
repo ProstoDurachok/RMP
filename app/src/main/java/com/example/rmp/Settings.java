@@ -18,7 +18,7 @@ public class Settings extends AppCompatActivity {
         });
         findViewById(R.id.exit).setOnClickListener(v -> {
 
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MainActivity2.class));
             /* overridePendingTransition(R.anim.fade_out, R.anim.fade_in);*/
         });
     }

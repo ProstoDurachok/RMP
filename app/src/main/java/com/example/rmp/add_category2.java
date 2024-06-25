@@ -27,7 +27,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class add_category extends AppCompatActivity {
+public class add_category2 extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int STORAGE_PERMISSION_CODE = 2;
@@ -99,7 +99,7 @@ public class add_category extends AppCompatActivity {
                 UploadTask uploadTask = imageRef.putBytes(imageBytes);
 
                 uploadTask.addOnFailureListener(e -> {
-                    Toast.makeText(add_category.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(add_category2.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }).addOnSuccessListener(taskSnapshot -> {
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         String imageUrl = uri.toString();
@@ -117,18 +117,18 @@ public class add_category extends AppCompatActivity {
 
     private void saveImageUrlToDatabase(String name, String imageUrl) {
         DatabaseReference categoryRef = FirebaseDatabase.getInstance().getReference()
-                .child("categories")
+                .child("categoriesCoh")
                 .child(uuid) // Добавляем uuid для пользователя
                 .push();
-        CategoryItem categoryItem = new CategoryItem(name, imageUrl, uuid); // Используем UUID текущего пользователя
-        categoryRef.setValue(categoryItem)
+        CategoryItemCoh categoryItemCoh = new CategoryItemCoh(name, imageUrl, uuid); // Используем UUID текущего пользователя
+        categoryRef.setValue(categoryItemCoh)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(add_category.this, "Category saved successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(add_category2.this, "Category saved successfully", Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(add_category.this, "Failed to save category: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(add_category2.this, "Failed to save category: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -147,12 +147,12 @@ public class add_category extends AppCompatActivity {
                 UploadTask uploadTask = imageRef.putBytes(imageBytes);
 
                 uploadTask.addOnFailureListener(e -> {
-                    Toast.makeText(add_category.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(add_category2.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }).addOnSuccessListener(taskSnapshot -> {
                     imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         String imageUrl = uri.toString();
                         // Вы можете сохранить imageUrl в базу данных, если это необходимо
-                        Toast.makeText(add_category.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(add_category2.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
                     });
                 });
             } catch (IOException e) {
