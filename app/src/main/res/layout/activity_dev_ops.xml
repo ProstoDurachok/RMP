@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DevOps"
+    android:background="#141313">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
+
+        <ImageButton
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/close"
+            android:background="#141313"
+            android:contentDescription="favorite"
+            android:layout_alignParentStart="true"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="ДевОпс"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/karmabold"
+                    android:textSize="20sp"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/im2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DevOps (акроним от англ. development and operations) — методология автоматизации технологических процессов сборки, настройки и развёртывания программного обеспечения. Методология предполагает активное взаимодействие специалистов по разработке со специалистами по информационно-технологическому обслуживанию и взаимную интеграцию их технологических процессов друг в друга для обеспечения высокого качества программного продукта. Предназначена для эффективной организации создания и обновления программных продуктов и услуг. Основана на идее тесной взаимозависимости создания продукта и эксплуатации программного обеспечения, которая прививается команде как культура создания продукта. Организациям, которым необходимы частые выпуски программного обеспечения, может понадобиться DevOps, т.е. автоматизация технологических процессов сборки, настройки и развёртывания программного обеспечения. Дневной цикл выпусков ПО может быть гораздо более интенсивным у организаций, которые выпускают несколько разнонаправленных приложений. Методология фокусируется на стандартизации окружений разработки с целью быстрого переноса программного обеспечения через стадии жизненного цикла ПО, способствуя быстрому выпуску версий программного продукта. В идеале, системы автоматизации сборки и выпуска должны быть доступны всем разработчикам в любом окружении, и у разработчиков должен быть контроль над окружением разработки, а информационно-технологическая инфраструктура должна становиться более сфокусированной на приложении. Задача инженеров автоматизации технологических процессов сборки, настройки и развёртывания программного обеспечения (DevOps engineers) — сделать процессы разработки и поставки программного обеспечения согласованным с эксплуатацией, объединив их в единое целое с помощью инструментов автоматизации. Движение за автоматизацию технологических процессов сборки, настройки и развёртывания программного обеспечения (DevOps-движение) возникло в 2009 году и было призвано решить проблемы взаимодействия команд разработки и эксплуатации программных продуктов. В том же году в Бельгии была организована серия конференций «DevOps Days»[1][2]. Затем «DevOps-дни» проходили в различных городах и странах мира."
+                    android:background="#242424"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/karmaregular"
+                    android:padding="10dp"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</RelativeLayout>

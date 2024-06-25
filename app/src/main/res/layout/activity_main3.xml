@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity3"
+    android:background="#141313">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginHorizontal="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добро пожаловать\n в Do to live!"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:fontFamily="@font/karmabold"/>
+
+        <ImageView
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/maan"/>
+
+        <EditText
+            android:id="@+id/customEditText"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Код из сообщения"
+            android:textColorHint="#A79E9E"
+            android:textAlignment="center"
+            android:fontFamily="@font/karmamedium"
+            android:background="@drawable/border_edit_text"
+            android:textColor="@color/white"
+            android:inputType="number"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="15dp"
+            android:text="Войти"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:background="@drawable/button"/>
+    </LinearLayout>
+
+</RelativeLayout>
