@@ -12,49 +12,43 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.UUID;
+
 public class Registration extends AppCompatActivity {
+    // Добавьте переменную для хранения базы данных пользователей
+    private DatabaseReference userRef;
     private EditText emailText, passwordText;
-    private DatabaseReference Database;
-    private String USER_KEY = "User";
-    private static final AtomicInteger keyGenerator = new AtomicInteger();
+    private static final String USERS_KEY = "User";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         init();
-        /*findViewById(R.id.button).setOnClickListener(v -> {
-
-            startActivity(new Intent(this, MainActivity.class));
-             overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
-        });*/
     }
 
-    public void init()
-    {
-
+    public void init() {
+        // Инициализация полей ввода и ссылки на базу данных
         emailText = findViewById(R.id.emailText);
         passwordText = findViewById(R.id.passwordText);
-        Database = FirebaseDatabase.getInstance().getReference(USER_KEY);
-
+        userRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY);
     }
 
-    public void onClickSave (View view)
-    {
-
-        String id = String.valueOf(keyGenerator.incrementAndGet());
+    public void onClickSave(View view) {
+        String id = UUID.randomUUID().toString(); // Генерация UUID
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
-        Users newUser = new Users(id,email,password);
-        if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) )
-        {
-            Database.push().setValue(newUser);
+        Users newUser = new Users(id, email, password);
+
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+            userRef.child(id).setValue(newUser); // Сохранение пользователя с UUID в Firebase
             Toast.makeText(this, "Успех!", Toast.LENGTH_SHORT).show();
 
-        }
-        else
-        {
+            // После успешной регистрации переходите на экран авторизации
+            startActivity(new Intent(this, MainActivity2.class));
+            finish(); // Закрыть текущую активность, чтобы пользователь не мог вернуться назад
+        } else {
             Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
