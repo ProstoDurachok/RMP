@@ -8,4 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#A79E9E</color>
+    <color name="primaryColor">#6200EE</color>
+    <color name="primaryDarkColor">#3700B3</color>
+    <color name="secondaryColor">#03DAC6</color>
+    <color name="secondaryDarkColor">#018786</color>
+    <color name="background_dark">#121212</color>
+    <color name="nav_bar_background">#242424</color>
+    <color name="cardBackgroundDark">#1E1E1E</color>
+    <color name="grayLight">#B0B0B0</color>
+
 </resources>

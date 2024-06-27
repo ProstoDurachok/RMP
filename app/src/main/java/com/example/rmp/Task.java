@@ -6,7 +6,6 @@ public class Task {
     public boolean isChecked;
 
     public Task() {
-        // Пустой конструктор, необходим для Firebase
     }
 
     public Task(String taskId, String taskName, boolean isChecked) {
