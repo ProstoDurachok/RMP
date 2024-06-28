@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -16,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.text.SpannableString;
+import android.text.style.StrikethroughSpan;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -125,16 +129,32 @@ public class Zadachi extends AppCompatActivity {
         CheckBox checkBox = taskView.findViewById(R.id.checkb);
         TextView textView = taskView.findViewById(R.id.task_text);
 
+        // Set initial state of CheckBox and TextView
         checkBox.setChecked(task.isChecked);
-        textView.setText(task.taskName);
+        updateTextView(task, textView); // Update text view style based on task state
 
         // Listener for CheckBox to update Firebase when checked/unchecked
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             task.isChecked = isChecked;
             databaseReference.child(task.taskId).setValue(task);
+            updateTextView(task, textView); // Update text view style based on task state
         });
 
         taskListLayout.addView(taskView);
+    }
+
+    private void updateTextView(Task task, TextView textView) {
+        SpannableString spannableString = new SpannableString(task.taskName);
+        if (task.isChecked) {
+            // Apply strikethrough style with black color
+            spannableString.setSpan(new BlackStrikethroughSpan(), 0, spannableString.length(), 0);
+        } else {
+            // Remove strikethrough style
+            textView.setText(task.taskName);
+            textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG)); // Remove strikethrough flag
+        }
+        textView.setTextColor(Color.WHITE); // Set text color to white
+        textView.setText(spannableString);
     }
 
     private void hideKeyboard(View view) {

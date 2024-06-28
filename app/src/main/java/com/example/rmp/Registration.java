@@ -1,60 +1,61 @@
 package com.example.rmp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.concurrent.atomic.AtomicInteger;
-import android.content.Intent;
+
+import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 public class Registration extends AppCompatActivity {
-    private EditText emailText, passwordText;
-    private DatabaseReference Database;
-    private String USER_KEY = "User";
-    private static final AtomicInteger keyGenerator = new AtomicInteger();
+
+    private EditText emailEditText;
+    private EditText passwordEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        init();
-        /*findViewById(R.id.button).setOnClickListener(v -> {
 
-            startActivity(new Intent(this, MainActivity.class));
-             overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
-        });*/
+        emailEditText = findViewById(R.id.emailText);
+        passwordEditText = findViewById(R.id.passwordText);
+
+        // Set touch listener for the main layout
+        findViewById(R.id.mainLayout).setOnTouchListener((v, event) -> {
+            hideKeyboard();
+            clearFocus();
+            return false;
+        });
+
+        findViewById(R.id.button).setOnClickListener(v -> {
+            // Handle button click
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
+            if (!email.isEmpty() && !password.isEmpty()) {
+                // Perform registration logic
+                Toast.makeText(this, "Регистрация успешна", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    public void init()
-    {
-
-        emailText = findViewById(R.id.emailText);
-        passwordText = findViewById(R.id.passwordText);
-        Database = FirebaseDatabase.getInstance().getReference(USER_KEY);
-
-    }
-
-    public void onClickSave (View view)
-    {
-
-        String id = String.valueOf(keyGenerator.incrementAndGet());
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-        Users newUser = new Users(id,email,password);
-        if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) )
-        {
-            Database.push().setValue(newUser);
-            Toast.makeText(this, "Успех!", Toast.LENGTH_SHORT).show();
-
-        }
-        else
-        {
-            Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(emailEditText.getWindowToken(), 0);
         }
     }
 
+    private void clearFocus() {
+        emailEditText.clearFocus();
+        passwordEditText.clearFocus();
+    }
+
+    public void onClickSave(View view) {
+        // Handle onClickSave if necessary
+    }
 }

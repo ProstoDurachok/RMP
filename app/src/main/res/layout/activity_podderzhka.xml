@@ -1,11 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Podderzhka"
-    android:background="#141313">
+    android:background="#141313"
+    tools:context=".Podderzhka">
+
+    <ImageButton
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"
+        android:background="#141313"
+        android:contentDescription="Close"
+        android:src="@drawable/close" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,6 +23,8 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_marginHorizontal="30dp">
+
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,6 +37,7 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:layout_marginTop="50dp"/>
+
         <TextView
             android:id="@+id/podderzhka"
             android:layout_width="match_parent"
@@ -35,31 +48,40 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:gravity="center"/>
+
         <EditText
-            android:id="@+id/exit"
+            android:id="@+id/supportMessage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="16dp"
-            android:fontFamily="@font/karmaregular"
-            android:hint="Пишите здесь"
-            android:textColorHint="#A79E9E"
-            android:textSize="16sp"
-            android:gravity="left"
-            android:background="@drawable/border_text_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/edit_text"
+            android:fontFamily="@font/karmabold"
+            android:hint="Опишите проблему"
+            android:imeOptions="actionDone"
+            android:maxLength="200"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/white"
+            android:textSize="18sp"
+            android:gravity="top"
+            android:inputType="textMultiLine" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="25dp"
+            android:layout_marginHorizontal="30dp"
+            android:text="Отправить"
+            android:textSize="15sp"
             android:textColor="@color/white"
-            android:inputType="textMultiLine"/>
+            android:fontFamily="@font/karmamedium"
+            android:background="@drawable/button"
+            android:layout_alignParentBottom="true"/>
+
+
+
     </LinearLayout>
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginVertical="25dp"
-        android:layout_marginHorizontal="30dp"
-        android:text="Отправить"
-        android:textSize="15sp"
-        android:textColor="@color/white"
-        android:fontFamily="@font/karmamedium"
-        android:background="@drawable/button"
-        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.example.rmp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
     private TextView descriptionTextView;
     private ImageView articleImageView;
     private TextView contentTextView;
+    private ImageButton closeButton; // Declare the ImageButton
 
     private DatabaseReference databaseReference;
 
@@ -29,6 +32,11 @@ public class ArticleDetailActivity extends AppCompatActivity {
         descriptionTextView = findViewById(R.id.articleDetailDescription);
         articleImageView = findViewById(R.id.articleDetailImage);
         contentTextView = findViewById(R.id.articleDetailContent);
+        closeButton = findViewById(R.id.close); // Initialize the ImageButton
+
+        closeButton.setOnClickListener(v -> {
+            finish(); // Close the activity when close button is clicked
+        });
 
         String articleId = getIntent().getStringExtra("articleId");
 

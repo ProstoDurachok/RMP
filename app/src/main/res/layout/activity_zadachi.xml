@@ -52,23 +52,6 @@
                 android:layout_marginBottom="130dp">
                 <!-- This section will contain dynamically added tasks -->
             </LinearLayout>
-                <EditText
-                    android:id="@+id/edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginHorizontal="20dp"
-                    android:background="@drawable/edit_text"
-                    android:fontFamily="@font/karmabold"
-                    android:hint="Введите задачу"
-                    android:imeOptions="actionDone"
-                    android:maxLength="50"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="@color/white"
-                    android:textSize="18sp"
-                    android:visibility="gone" />
 
         </RelativeLayout>
 
@@ -94,6 +77,24 @@
         android:orientation="horizontal"
         android:background="#242424"
         android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/edit_text"
+            android:fontFamily="@font/karmabold"
+            android:hint="Введите задачу"
+            android:imeOptions="actionDone"
+            android:maxLength="50"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/zadachi"
