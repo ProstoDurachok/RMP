@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 public class BitCoin extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,7 +13,6 @@ public class BitCoin extends AppCompatActivity {
         findViewById(R.id.close).setOnClickListener(v -> {
 
             startActivity(new Intent(this, Poleznoe.class));
-            /* overridePendingTransition(R.anim.fade_out, R.anim.fade_in);*/
         });
     }
 }

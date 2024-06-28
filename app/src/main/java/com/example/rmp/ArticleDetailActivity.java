@@ -14,21 +14,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class ArticleDetailActivity extends AppCompatActivity {
-
     private TextView titleTextView;
     private TextView descriptionTextView;
     private ImageView articleImageView;
     private TextView contentTextView;
-    private ImageButton closeButton; // Declare the ImageButton
-
+    private ImageButton closeButton;
     private DatabaseReference databaseReference;
     private String currentUserUid;
     private SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +34,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         descriptionTextView = findViewById(R.id.articleDetailDescription);
         articleImageView = findViewById(R.id.articleDetailImage);
         contentTextView = findViewById(R.id.articleDetailContent);
-        closeButton = findViewById(R.id.close); // Initialize the ImageButton
+        closeButton = findViewById(R.id.close);
 
         sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
 
@@ -46,13 +42,10 @@ public class ArticleDetailActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra("userId")) {
             currentUserUid = intent.getStringExtra("userId");
         } else {
-            // If userId is not passed via Intent, try to fetch from SharedPreferences
             currentUserUid = sharedPreferences.getString("userId", null);
 
             if (currentUserUid == null) {
-                // Generate a new UUID if not available
                 currentUserUid = UUID.randomUUID().toString();
-                // Save the generated UUID in SharedPreferences
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("userId", currentUserUid);
                 editor.apply();
@@ -60,7 +53,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         }
 
         closeButton.setOnClickListener(v -> {
-            finish(); // Close the activity when close button is clicked
+            finish();
         });
 
         String articleId = getIntent().getStringExtra("articleId");
@@ -75,7 +68,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 .child("articles")
                 .child(currentUserUid)
                 .child(articleId);
-
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

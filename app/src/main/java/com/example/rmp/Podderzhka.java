@@ -4,34 +4,29 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Podderzhka extends AppCompatActivity {
-
     private EditText supportMessageEditText;
     private DatabaseReference supportDatabaseReference;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_podderzhka);
 
-        // Initialize Firebase Database reference
         supportDatabaseReference = FirebaseDatabase.getInstance().getReference("support_messages");
 
         supportMessageEditText = findViewById(R.id.supportMessage);
         ImageButton closeButton = findViewById(R.id.close);
         closeButton.setOnClickListener(v -> {
-            onBackPressed(); // Go back to the previous activity
+            onBackPressed();
         });
 
         findViewById(R.id.button).setOnClickListener(v -> {
@@ -85,20 +80,8 @@ public class Podderzhka extends AppCompatActivity {
 
     public static class SupportMessage {
         public String message;
-
-        public SupportMessage() {
-            // Default constructor required for calls to DataSnapshot.getValue(SupportMessage.class)
-        }
-
+        public SupportMessage() {}
         public SupportMessage(String message) {
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
             this.message = message;
         }
     }

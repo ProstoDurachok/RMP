@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.text.SpannableString;
-import android.text.style.StrikethroughSpan;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,16 +30,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.UUID;
 
 public class Zadachi extends AppCompatActivity {
-
     private EditText editText;
     private DatabaseReference databaseReference;
     private LinearLayout taskListLayout;
     private RelativeLayout rootLayout;
-
     private String currentUserUid;
-
     private SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +47,10 @@ public class Zadachi extends AppCompatActivity {
         if (intent != null && intent.hasExtra("userId")) {
             currentUserUid = intent.getStringExtra("userId");
         } else {
-            // If userId is not passed via Intent, try to fetch from SharedPreferences
             currentUserUid = sharedPreferences.getString("userId", null);
 
             if (currentUserUid == null) {
-                // Generate a new UUID if not available
                 currentUserUid = UUID.randomUUID().toString();
-                // Save the generated UUID in SharedPreferences
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("userId", currentUserUid);
                 editor.apply();
@@ -77,7 +69,7 @@ public class Zadachi extends AppCompatActivity {
                 String taskName = editText.getText().toString().trim();
                 if (!TextUtils.isEmpty(taskName)) {
                     addTaskToFirebase(taskName);
-                    editText.setText(""); // Clear text after adding task
+                    editText.setText("");
                     editText.setVisibility(View.GONE);
                     hideKeyboard(editText);
                 }
@@ -101,7 +93,6 @@ public class Zadachi extends AppCompatActivity {
             showKeyboard(editText);
         });
 
-        // Handle clicks on bottom panel icons
         findViewById(R.id.zadachi).setOnClickListener(v -> {
             startActivity(new Intent(this, Zadachi.class));
         });
@@ -115,10 +106,8 @@ public class Zadachi extends AppCompatActivity {
             startActivity(new Intent(this, Settings.class));
         });
 
-        // Add "Delete Completed" button functionality
         findViewById(R.id.delete_completed_button).setOnClickListener(v -> deleteCompletedTasksFromFirebase());
 
-        // Load tasks from Firebase Database on activity start
         loadTasksFromFirebase();
     }
 
@@ -150,22 +139,19 @@ public class Zadachi extends AppCompatActivity {
             }
         });
     }
-
     private void addTaskToUI(Task task) {
         View taskView = getLayoutInflater().inflate(R.layout.task_item, taskListLayout, false);
 
         CheckBox checkBox = taskView.findViewById(R.id.checkb);
         TextView textView = taskView.findViewById(R.id.task_text);
 
-        // Set initial state of CheckBox and TextView
         checkBox.setChecked(task.isChecked);
-        updateTextView(task, textView); // Update text view style based on task state
+        updateTextView(task, textView);
 
-        // Listener for CheckBox to update Firebase when checked/unchecked
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             task.isChecked = isChecked;
             databaseReference.child(task.taskId).setValue(task);
-            updateTextView(task, textView); // Update text view style based on task state
+            updateTextView(task, textView);
         });
 
         taskListLayout.addView(taskView);
@@ -174,14 +160,12 @@ public class Zadachi extends AppCompatActivity {
     private void updateTextView(Task task, TextView textView) {
         SpannableString spannableString = new SpannableString(task.taskName);
         if (task.isChecked) {
-            // Apply strikethrough style with black color
             spannableString.setSpan(new BlackStrikethroughSpan(), 0, spannableString.length(), 0);
         } else {
-            // Remove strikethrough style
             textView.setText(task.taskName);
             textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG)); // Remove strikethrough flag
         }
-        textView.setTextColor(Color.WHITE); // Set text color to white
+        textView.setTextColor(Color.WHITE);
         textView.setText(spannableString);
     }
 
@@ -197,7 +181,6 @@ public class Zadachi extends AppCompatActivity {
         }
     }
 
-    // Method to delete completed tasks from Firebase Database
     private void deleteCompletedTasksFromFirebase() {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,15 +26,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class add_category2 extends AppCompatActivity {
-
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int STORAGE_PERMISSION_CODE = 2;
-
     private ImageView imageView;
     private EditText customEditText;
     private Uri imageUri;
-    private String uuid; // Переменная для хранения UUID текущего пользователя
-
+    private String uuid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +40,6 @@ public class add_category2 extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         customEditText = findViewById(R.id.customEditText);
 
-        // Получаем UUID текущего пользователя из Intent
         Intent intent = getIntent();
         if (intent != null) {
             uuid = intent.getStringExtra("userId");
@@ -118,9 +112,9 @@ public class add_category2 extends AppCompatActivity {
     private void saveImageUrlToDatabase(String name, String imageUrl) {
         DatabaseReference categoryRef = FirebaseDatabase.getInstance().getReference()
                 .child("categoriesCoh")
-                .child(uuid) // Добавляем uuid для пользователя
+                .child(uuid)
                 .push();
-        CategoryItemCoh categoryItemCoh = new CategoryItemCoh(name, imageUrl, uuid); // Используем UUID текущего пользователя
+        CategoryItemCoh categoryItemCoh = new CategoryItemCoh(name, imageUrl, uuid);
         categoryRef.setValue(categoryItemCoh)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(add_category2.this, "Category saved successfully", Toast.LENGTH_SHORT).show();
@@ -130,38 +124,6 @@ public class add_category2 extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(add_category2.this, "Failed to save category: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-    }
-
-
-    private void uploadImageToStorage(String name) {
-        if (imageUri != null && !name.isEmpty()) {
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageBytes = baos.toByteArray();
-
-                // Загрузка изображения в Firebase Storage
-                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                StorageReference imageRef = storageRef.child("images/" + uuid + "/" + name + ".jpg"); // Путь к изображению с использованием userId
-                UploadTask uploadTask = imageRef.putBytes(imageBytes);
-
-                uploadTask.addOnFailureListener(e -> {
-                    Toast.makeText(add_category2.this, "Failed to upload image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }).addOnSuccessListener(taskSnapshot -> {
-                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        String imageUrl = uri.toString();
-                        // Вы можете сохранить imageUrl в базу данных, если это необходимо
-                        Toast.makeText(add_category2.this, "Image uploaded successfully", Toast.LENGTH_SHORT).show();
-                    });
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Failed to process image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "Please select an image and enter a name", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void requestStoragePermission() {

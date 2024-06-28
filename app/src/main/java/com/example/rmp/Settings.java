@@ -14,11 +14,8 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // Handle click on "Поддержка"
         findViewById(R.id.podderzhka).setOnClickListener(v -> {
             startActivity(new Intent(this, Podderzhka.class));
-            // Add transition animations if needed
-            // overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
         });
 
         // Handle click on "Exit"

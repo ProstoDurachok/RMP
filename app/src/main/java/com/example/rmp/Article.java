@@ -1,17 +1,13 @@
 package com.example.rmp;
 
 public class Article {
-    private String id; // ID статьи
+    private String id;
     private String title;
     private String description;
     private String imageUrl;
     private String content;
     private boolean favorite;
-
-    public Article() {
-        // Default constructor required for Firebase
-    }
-
+    public Article() {}
     public Article(String id, String title, String description, String imageUrl, String content, boolean favorite) {
         this.id = id;
         this.title = title;
@@ -34,24 +30,12 @@ public class Article {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getContent() {
@@ -66,7 +50,4 @@ public class Article {
         return favorite;
     }
 
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
 }

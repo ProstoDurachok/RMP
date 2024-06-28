@@ -18,8 +18,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,10 +32,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class add_category3 extends AppCompatActivity {
-
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int STORAGE_PERMISSION_CODE = 2;
-
     private ImageView imageView;
     private EditText customEditText;
     private Uri imageUri;
@@ -45,7 +41,7 @@ public class add_category3 extends AppCompatActivity {
     private EditText amountEditText;
 
 
-    private String uuid; // Переменная для хранения UUID текущего пользователя
+    private String uuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +50,9 @@ public class add_category3 extends AppCompatActivity {
 
         imageView = findViewById(R.id.imageView);
         customEditText = findViewById(R.id.customEditText);
-        spinnerCategory = findViewById(R.id.spinner_category); // Инициализируем Spinner
+        spinnerCategory = findViewById(R.id.spinner_category);
         amountEditText = findViewById(R.id.amountEditText);
 
-        // Получаем UUID текущего пользователя из Intent
         Intent intent = getIntent();
         if (intent != null) {
             uuid = intent.getStringExtra("userId");
@@ -76,14 +71,13 @@ public class add_category3 extends AppCompatActivity {
 
         findViewById(R.id.button).setOnClickListener(v -> saveCategory());
 
-        // Загружаем категории из Firebase
         loadCategoriesCohFromDatabase();
     }
 
     private void loadCategoriesCohFromDatabase() {
         DatabaseReference categoriesCohRef = FirebaseDatabase.getInstance().getReference()
                 .child("categoriesCoh")
-                .child(uuid); // Используем uuid текущего пользователя
+                .child(uuid);
 
         categoriesCohRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -154,7 +148,6 @@ public class add_category3 extends AppCompatActivity {
                         CustomCategoryItem customCategoryItem = new CustomCategoryItem(name, imageUrl, amount, uuid);
                         saveCustomCategoryItemToDatabase(customCategoryItem);
 
-                        // После сохранения, вызываем метод для обновления amount категории
                         updateCategoryAmount(selectedCategory, amount);
                     });
                 });
@@ -172,7 +165,7 @@ public class add_category3 extends AppCompatActivity {
     private void saveCustomCategoryItemToDatabase(CustomCategoryItem customCategoryItem) {
         DatabaseReference categoryRef = FirebaseDatabase.getInstance().getReference()
                 .child("categoriesRas")
-                .child(customCategoryItem.getUuid()); // Используем uuid из объекта CustomCategoryItem
+                .child(customCategoryItem.getUuid());
 
         categoryRef.push().setValue(customCategoryItem)
                 .addOnSuccessListener(aVoid -> {

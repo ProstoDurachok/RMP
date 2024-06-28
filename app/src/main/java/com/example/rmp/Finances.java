@@ -18,8 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +28,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class Finances extends AppCompatActivity {
-
     private static final int ADD_CATEGORY_REQUEST = 1;
     private String currentUserUid;
     private ArrayList<FinanceItem> financeItems;
@@ -47,24 +44,18 @@ public class Finances extends AppCompatActivity {
         if (intent != null && intent.hasExtra("userId")) {
             currentUserUid = intent.getStringExtra("userId");
         } else {
-            // If userId is not passed via Intent, try to fetch from SharedPreferences
             currentUserUid = sharedPreferences.getString("userId", null);
 
             if (currentUserUid == null) {
-                // Generate a new UUID if not available
                 currentUserUid = UUID.randomUUID().toString();
-                // Save the generated UUID in SharedPreferences
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("userId", currentUserUid);
                 editor.apply();
             }
         }
 
-        // Log the current user UUID (for debugging)
         Log.d("FinanceActivity", "Current User UUID: " + currentUserUid);
 
-
-        // Setting up button click listeners
         findViewById(R.id.add1).setOnClickListener(v -> {
             startActivityForResult(new Intent(this, add_category.class).putExtra("userId", currentUserUid), ADD_CATEGORY_REQUEST);
         });
@@ -77,7 +68,6 @@ public class Finances extends AppCompatActivity {
             startActivityForResult(new Intent(this, add_category3.class).putExtra("userId", currentUserUid), ADD_CATEGORY_REQUEST);
         });
 
-        // Loading data from Firebase Realtime Database
         loadCategoriesFromDatabase();
         loadCategoriesFromDatabaseCoh();
         loadCategoriesFromDatabaseRas();
@@ -87,9 +77,8 @@ public class Finances extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_CATEGORY_REQUEST && resultCode == RESULT_OK) {
-            // Refresh data after adding a new category
-            loadCategoriesFromDatabase(); // Load data from categories
-            loadCategoriesFromDatabaseCoh(); // Load data from categoriesCoh
+            loadCategoriesFromDatabase();
+            loadCategoriesFromDatabaseCoh();
             loadCategoriesFromDatabaseRas();
         }
     }
@@ -109,14 +98,12 @@ public class Finances extends AppCompatActivity {
                     CategoryItem categoryItem = dataSnapshot.getValue(CategoryItem.class);
                     Log.d("Finances", "CategoryItem: " + categoryItem);
 
-                    // Check if the category belongs to the current user
                     if (categoryItem != null) {
                         Log.d("Finances", "CategoryItem Name: " + categoryItem.getName());
                         Log.d("Finances", "CategoryItem Image URL: " + categoryItem.getImageUrl());
                         Log.d("Finances", "CategoryItem ID: " + categoryItem.getId());
 
                         if (currentUserUid.equals(categoryItem.getId()) && categoryItem.getImageUrl() != null && !categoryItem.getImageUrl().isEmpty()) {
-                            // Create FinanceItem considering the loaded amount
                             financeItems.add(new FinanceItem(categoryItem.getName(), categoryItem.getAmount(), categoryItem.getImageUrl()));
                         }
                     }
@@ -147,14 +134,12 @@ public class Finances extends AppCompatActivity {
                     CustomCategoryItem customCategoryItem = dataSnapshot.getValue(CustomCategoryItem.class);
                     Log.d("Finances", "CategoryItem: " + customCategoryItem);
 
-                    // Check if the category belongs to the current user
                     if (customCategoryItem != null) {
                         Log.d("Finances", "CategoryItem Name: " + customCategoryItem.getName());
                         Log.d("Finances", "CategoryItem Image URL: " + customCategoryItem.getImageUrl());
                         Log.d("Finances", "CategoryItem ID: " + customCategoryItem.getUuid());
 
                         if (currentUserUid.equals(customCategoryItem.getUuid()) && customCategoryItem.getImageUrl() != null && !customCategoryItem.getImageUrl().isEmpty()) {
-                            // Create FinanceItem considering the loaded amount
                             financeItems.add(new FinanceItem(customCategoryItem.getName(), customCategoryItem.getAmount(), customCategoryItem.getImageUrl()));
                         }
                     }
@@ -187,7 +172,6 @@ public class Finances extends AppCompatActivity {
                                     if (!TextUtils.isEmpty(amount) && TextUtils.isDigitsOnly(amount)) {
                                         int amountValue = Integer.parseInt(amount);
 
-                                        // Update amount as string to maintain consistency if it's stored as string
                                         categoryRef.child(categoryId).child("amount").setValue(String.valueOf(amountValue))
                                                 .addOnSuccessListener(aVoid -> {
                                                     Toast.makeText(Finances.this, "Amount saved successfully", Toast.LENGTH_SHORT).show();
@@ -234,7 +218,6 @@ public class Finances extends AppCompatActivity {
                                     if (!TextUtils.isEmpty(amount) && TextUtils.isDigitsOnly(amount)) {
                                         int amountValue = Integer.parseInt(amount);
 
-                                        // Update amount as string to maintain consistency if it's stored as string
                                         categoryRef.child(categoryId).child("amount").setValue(String.valueOf(amountValue))
                                                 .addOnSuccessListener(aVoid -> {
                                                     Toast.makeText(Finances.this, "Amount saved successfully", Toast.LENGTH_SHORT).show();
@@ -274,14 +257,12 @@ public class Finances extends AppCompatActivity {
 
             String name = nameView.getText().toString();
             if (name.equals(categoryName)) {
-                amountView.setText(newAmount); // Обновляем отображаемое значение
+                amountView.setText(newAmount);
 
-                // Обновляем значение в объекте FinanceItem, если необходимо
                 if (financeItems != null) {
                     for (FinanceItem item : financeItems) {
                         if (item.getName().equals(categoryName)) {
-                            // Устанавливаем значение amount в FinanceItem как строку
-                            item.setAmount(newAmount); // Предполагается, что у FinanceItem есть метод setAmount(String)
+                            item.setAmount(newAmount);
                             break;
                         }
                     }

@@ -4,11 +4,8 @@ public class CategoryItem {
     private String name;
     private String imageUrl;
     private String id;
-    private String amount; // Add this field for amount
-
-    public CategoryItem() {
-        // Default constructor required for Firebase
-    }
+    private String amount;
+    public CategoryItem() {}
 
     public CategoryItem(String name, String imageUrl, String id) {
         this.name = name;
@@ -16,9 +13,6 @@ public class CategoryItem {
         this.id = id;
         this.amount = "0";
     }
-
-
-    // Getter and Setter methods for all fields
 
     public String getName() {
         return name;
@@ -30,10 +24,6 @@ public class CategoryItem {
 
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getId() {
@@ -48,9 +38,6 @@ public class CategoryItem {
         return amount;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
 }
 
 
