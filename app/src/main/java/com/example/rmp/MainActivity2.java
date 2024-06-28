@@ -3,9 +3,9 @@ package com.example.rmp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,7 +19,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     private EditText editText, editPassword;
     private DatabaseReference usersRef; // Ссылка на базу данных Firebase
-    private String userId; // Глобальная переменная для хранения UUID
+    private SharedPreferences preferences; // Переменная для работы с SharedPreferences
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,9 @@ public class MainActivity2 extends AppCompatActivity {
         editText = findViewById(R.id.customEditText);
         editPassword = findViewById(R.id.editPassword);
         usersRef = FirebaseDatabase.getInstance().getReference().child("User"); // Инициализация ссылки на базу данных
+
+        // Инициализация SharedPreferences
+        preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
 
         findViewById(R.id.button).setOnClickListener(v -> {
             String email = editText.getText().toString().trim();
@@ -52,6 +55,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    // Найден пользователь с таким email
                     for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                         // Получаем данные пользователя
                         String storedPassword = userSnapshot.child("password").getValue(String.class);
@@ -59,14 +63,18 @@ public class MainActivity2 extends AppCompatActivity {
 
                         // Проверяем пароль и id
                         if (storedPassword != null && id != null && storedPassword.equals(password)) {
-                            userId = id; // Получаем id пользователя
+                            // Сохранение userId в SharedPreferences
+                            saveUserId(id);
+                            Log.d("Finances", "Current User UUID: " + id); // Log the UUID
+
                             moveToNextScreen(); // Переходим на следующий экран
                             return;
                         }
                     }
+                } else {
+                    // Пользователь с таким email не найден
+                    Toast.makeText(MainActivity2.this, "Authentication failed: User not found", Toast.LENGTH_SHORT).show();
                 }
-                // Неверные учетные данные или пользователь не найден
-                Toast.makeText(MainActivity2.this, "Authentication failed: Invalid credentials", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -77,16 +85,22 @@ public class MainActivity2 extends AppCompatActivity {
         });
     }
 
-    private void moveToNextScreen() {
-        // Переход на следующий экран с передачей userId
-        if (userId != null) {
-            Intent intent = new Intent(MainActivity2.this, Finances.class);
-            intent.putExtra("userId", userId);
-            startActivity(intent);
-            finish(); // Закрыть текущую активность
-        } else {
-            Toast.makeText(MainActivity2.this, "User ID is null", Toast.LENGTH_SHORT).show();
-        }
+    private void saveUserId(String userId) {
+        // Получаем доступ к SharedPreferences, которые вы используете в основном коде
+        SharedPreferences sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+
+        // Сохраняем userId в SharedPreferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userId", userId);
+        Log.d("Finances", "Current User UUID: " + userId); // Логируем UUID
+
+        editor.apply();
     }
 
+
+    private void moveToNextScreen() {
+        // Переход на следующий экран
+        startActivity(new Intent(MainActivity2.this, Zadachi.class));
+        finish(); // Закрыть текущую активность
+    }
 }
