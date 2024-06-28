@@ -1,6 +1,7 @@
 package com.example.rmp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,6 +14,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 public class ArticleDetailActivity extends AppCompatActivity {
 
     private TextView titleTextView;
@@ -22,6 +26,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
     private ImageButton closeButton; // Declare the ImageButton
 
     private DatabaseReference databaseReference;
+    private String currentUserUid;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,25 @@ public class ArticleDetailActivity extends AppCompatActivity {
         articleImageView = findViewById(R.id.articleDetailImage);
         contentTextView = findViewById(R.id.articleDetailContent);
         closeButton = findViewById(R.id.close); // Initialize the ImageButton
+
+        sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("userId")) {
+            currentUserUid = intent.getStringExtra("userId");
+        } else {
+            // If userId is not passed via Intent, try to fetch from SharedPreferences
+            currentUserUid = sharedPreferences.getString("userId", null);
+
+            if (currentUserUid == null) {
+                // Generate a new UUID if not available
+                currentUserUid = UUID.randomUUID().toString();
+                // Save the generated UUID in SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userId", currentUserUid);
+                editor.apply();
+            }
+        }
 
         closeButton.setOnClickListener(v -> {
             finish(); // Close the activity when close button is clicked
@@ -46,7 +71,10 @@ public class ArticleDetailActivity extends AppCompatActivity {
     }
 
     private void loadArticleDetails(String articleId) {
-        databaseReference = FirebaseDatabase.getInstance().getReference("articles").child(articleId);
+        databaseReference = FirebaseDatabase.getInstance().getReference()
+                .child("articles")
+                .child(currentUserUid)
+                .child(articleId);
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
