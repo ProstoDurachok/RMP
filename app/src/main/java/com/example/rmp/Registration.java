@@ -1,54 +1,61 @@
 package com.example.rmp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.concurrent.atomic.AtomicInteger;
-import android.content.Intent;
+
+import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.UUID;
-
 public class Registration extends AppCompatActivity {
-    // Добавьте переменную для хранения базы данных пользователей
-    private DatabaseReference userRef;
-    private EditText emailText, passwordText;
-    private static final String USERS_KEY = "User";
+
+    private EditText emailEditText;
+    private EditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        init();
+
+        emailEditText = findViewById(R.id.emailText);
+        passwordEditText = findViewById(R.id.passwordText);
+
+        // Set touch listener for the main layout
+        findViewById(R.id.mainLayout).setOnTouchListener((v, event) -> {
+            hideKeyboard();
+            clearFocus();
+            return false;
+        });
+
+        findViewById(R.id.button).setOnClickListener(v -> {
+            // Handle button click
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
+            if (!email.isEmpty() && !password.isEmpty()) {
+                // Perform registration logic
+                Toast.makeText(this, "Регистрация успешна", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    public void init() {
-        // Инициализация полей ввода и ссылки на базу данных
-        emailText = findViewById(R.id.emailText);
-        passwordText = findViewById(R.id.passwordText);
-        userRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY);
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(emailEditText.getWindowToken(), 0);
+        }
+    }
+
+    private void clearFocus() {
+        emailEditText.clearFocus();
+        passwordEditText.clearFocus();
     }
 
     public void onClickSave(View view) {
-        String id = UUID.randomUUID().toString(); // Генерация UUID
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-        Users newUser = new Users(id, email, password);
-
-        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
-            userRef.child(id).setValue(newUser); // Сохранение пользователя с UUID в Firebase
-            Toast.makeText(this, "Успех!", Toast.LENGTH_SHORT).show();
-
-            // После успешной регистрации переходите на экран авторизации
-            startActivity(new Intent(this, MainActivity2.class));
-            finish(); // Закрыть текущую активность, чтобы пользователь не мог вернуться назад
-        } else {
-            Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show();
-        }
+        // Handle onClickSave if necessary
     }
 }

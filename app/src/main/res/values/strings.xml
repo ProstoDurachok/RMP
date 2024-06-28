@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RMP</string>
+    <string name="article_image">Изображение статьи</string>
 </resources>

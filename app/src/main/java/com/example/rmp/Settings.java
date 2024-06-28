@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 public class Settings extends AppCompatActivity {
 
@@ -11,15 +13,28 @@ public class Settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        // Handle click on "Поддержка"
         findViewById(R.id.podderzhka).setOnClickListener(v -> {
-
             startActivity(new Intent(this, Podderzhka.class));
-            /* overridePendingTransition(R.anim.fade_out, R.anim.fade_in);*/
+            // Add transition animations if needed
+            // overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
         });
-        findViewById(R.id.exit).setOnClickListener(v -> {
 
+        // Handle click on "Exit"
+        findViewById(R.id.exit).setOnClickListener(v -> {
             startActivity(new Intent(this, MainActivity2.class));
-            /* overridePendingTransition(R.anim.fade_out, R.anim.fade_in);*/
+            // Add transition animations if needed
+            // overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
+        });
+
+        // Handle click on "Close" button (крестик)
+        ImageButton closeButton = findViewById(R.id.close);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Close the current activity
+            }
         });
     }
 }

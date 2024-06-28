@@ -1,156 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Poleznoe"
-    android:background="#141313">
+    android:id="@+id/mainLayout"
+    android:background="@color/background_dark"
+    tools:context=".Poleznoe">
 
+    <!-- Your existing LinearLayout for main content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginHorizontal="30dp">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginVertical="30dp"
-            android:fontFamily="@font/karmabold"
-            android:gravity="center"
-            android:text="Полезное"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:layout_marginTop="50dp"/>
+        android:paddingHorizontal="24dp">
+
+        <!-- Title TextView and other UI elements -->
+
+        <!-- SearchView -->
         <SearchView
-            android:id = "@+id/search"
+            android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@drawable/border_edit_text"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/white"
-            android:inputType="text"
-            app:theme="@style/SearchViewStyle"/>
+            android:layout_marginBottom="16dp"
+            app:queryHint="Поиск..."
+            android:iconifiedByDefault="false"
+            app:theme="@style/SearchViewStyle" />
+
+        <!-- ImageButton for favorite filtering -->
         <ImageButton
             android:id="@+id/favoriteButtonAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:src="@drawable/selector_favorite"
             android:contentDescription="favorite"
-            android:background="#242424"/>
+            android:background="@drawable/border_edit_text"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="onFavoriteButtonClick" />
+
+        <!-- ScrollView and LinearLayout for articles -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp">
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:background="@drawable/border_edit_text"
+            android:layout_marginBottom="45dp">
+
             <LinearLayout
+                android:id="@+id/articleContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/bitcoin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    android:elevation="3dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:background="#242424">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/im1"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Что такое Биткоин?"
-                            android:textColor="@color/white"
-                            android:padding="10dp"
-                            android:fontFamily="@font/karmabold"
-                            android:textSize="20sp"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Статья от известного инвестора"
-                            android:textColor="#3F3F3F"
-                            android:padding="10dp"
-                            android:fontFamily="@font/karmabold"
-                            android:textSize="16sp"/>
-                    </LinearLayout>
-                    <ImageButton
-                        android:id="@+id/favoriteButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="280dp"
-                        android:layout_marginTop="90dp"
-                        android:src="@drawable/selector_favorite"
-                        android:contentDescription="favorite"
-                        android:background="#00000000"/>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/devops"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="8dp"
-                    android:elevation="3dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:background="#242424">
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/im2"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Что такое ДевОпс?"
-                            android:textColor="@color/white"
-                            android:padding="10dp"
-                            android:fontFamily="@font/karmabold"
-                            android:textSize="20sp"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Статья от известного работника"
-                            android:textColor="#3F3F3F"
-                            android:padding="10dp"
-                            android:fontFamily="@font/karmabold"
-                            android:textSize="16sp"/>
-                    </LinearLayout>
-                    <ImageButton
-                        android:id="@+id/favoriteButton1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="280dp"
-                        android:layout_marginTop="90dp"
-                        android:src="@drawable/selector_favorite"
-                        android:contentDescription="favorite"
-                        android:background="#00000000"/>
-                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
+    <!-- Bottom LinearLayout for navigation icons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="#242424">
+        <!-- Navigation icons -->
         <ImageView
             android:id="@+id/zadachi"
             android:layout_width="wrap_content"
@@ -184,5 +101,15 @@
             android:layout_marginVertical="3dp"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>
+
+    <!-- Invisible View to handle clicks outside SearchView -->
+    <View
+        android:id="@+id/outsideSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@android:color/transparent"
+        android:visibility="invisible" />
 
 </RelativeLayout>
