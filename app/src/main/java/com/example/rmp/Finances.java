@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,25 +27,42 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Finances extends AppCompatActivity {
 
     private static final int ADD_CATEGORY_REQUEST = 1;
     private String currentUserUid;
     private ArrayList<FinanceItem> financeItems;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finances);
 
+        sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("userId")) {
             currentUserUid = intent.getStringExtra("userId");
         } else {
-            Toast.makeText(this, "Error: User ID not found", Toast.LENGTH_SHORT).show();
-            finish();
+            // If userId is not passed via Intent, try to fetch from SharedPreferences
+            currentUserUid = sharedPreferences.getString("userId", null);
+
+            if (currentUserUid == null) {
+                // Generate a new UUID if not available
+                currentUserUid = UUID.randomUUID().toString();
+                // Save the generated UUID in SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userId", currentUserUid);
+                editor.apply();
+            }
         }
+
+        // Log the current user UUID (for debugging)
+        Log.d("FinanceActivity", "Current User UUID: " + currentUserUid);
+
 
         // Setting up button click listeners
         findViewById(R.id.add1).setOnClickListener(v -> {
@@ -53,7 +71,7 @@ public class Finances extends AppCompatActivity {
 
         findViewById(R.id.add2).setOnClickListener(v -> {
             startActivityForResult(new Intent(this, add_category2.class).putExtra("userId", currentUserUid), ADD_CATEGORY_REQUEST);
-    });
+        });
 
         findViewById(R.id.add3).setOnClickListener(v -> {
             startActivityForResult(new Intent(this, add_category3.class).putExtra("userId", currentUserUid), ADD_CATEGORY_REQUEST);
@@ -246,8 +264,6 @@ public class Finances extends AppCompatActivity {
                 });
     }
 
-
-
     private void updateFinanceItem(String categoryName, String newAmount) {
         LinearLayout linearLayout = findViewById(R.id.finance_list);
 
@@ -301,13 +317,6 @@ public class Finances extends AppCompatActivity {
             }
         }
     }
-
-
-
-
-
-
-
 
     private void populateLinearLayout(ArrayList<FinanceItem> financeItems) {
         LinearLayout linearLayout = findViewById(R.id.finance_list);
@@ -442,6 +451,7 @@ public class Finances extends AppCompatActivity {
             linearLayout.addView(itemView);
         }
     }
+
 
     private void populateLinearLayoutRas(ArrayList<FinanceItem> financeItems) {
         LinearLayout linearLayout = findViewById(R.id.finance_list_ras);

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,6 +28,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.UUID;
+
 public class Zadachi extends AppCompatActivity {
 
     private EditText editText;
@@ -34,12 +37,37 @@ public class Zadachi extends AppCompatActivity {
     private LinearLayout taskListLayout;
     private RelativeLayout rootLayout;
 
+    private String currentUserUid;
+
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zadachi);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("tasks");
+        sharedPreferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("userId")) {
+            currentUserUid = intent.getStringExtra("userId");
+        } else {
+            // If userId is not passed via Intent, try to fetch from SharedPreferences
+            currentUserUid = sharedPreferences.getString("userId", null);
+
+            if (currentUserUid == null) {
+                // Generate a new UUID if not available
+                currentUserUid = UUID.randomUUID().toString();
+                // Save the generated UUID in SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userId", currentUserUid);
+                editor.apply();
+            }
+        }
+
+        databaseReference = FirebaseDatabase.getInstance().getReference()
+            .child("tasks")
+            .child(currentUserUid);
         taskListLayout = findViewById(R.id.task_list_layout);
         rootLayout = findViewById(R.id.root_layout);
 

@@ -46,15 +46,15 @@
             android:name=".Registration"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
             android:name=".ArticleDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".MainActivity2"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        />
+        </activity>
     </application>
 </manifest>
